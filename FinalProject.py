@@ -5,9 +5,16 @@
 
 
 import requests
+import textwrap 
 import json 
+from flask import Flask, render_template, url_for, request
 
-CACHE_FILE = "usda_cache.json"
+
+
+with open('decision_tree.json') as f:
+    tree = json.load(f)
+
+CACHE_FILE = "cache.json"
 CACHE_DICT = {}
 
 def open_cache():
@@ -114,24 +121,6 @@ def make_request_with_cache(baseurl, params):
 CACHE_DICT = open_cache()
 
 
-#spoontacular data
-def search_recipe(query, cuisine):
-    
-    spoon_api_key = '225f60550c4e4e1b8fa8aeaf780bafe5'
-    spoon_baseurl = 'https://api.spoonacular.com/recipes/complexSearch'
-    
-    params = {
-        "apiKey": spoon_api_key,
-        "query": query,
-        "cuisine": cuisine
-    }
-    
-    response = make_request_with_cache(spoon_baseurl, params=params)
-    return response
-
-
-#recipe_data = search_recipe("Pasta", "Italian")['results'][0:5]
-#print(recipe_data)
 
 #Walmart data
 def search_item(search_term):
@@ -152,196 +141,100 @@ def search_item(search_term):
 # print the JSON response from BlueCart API
 #print(search_item("Apple"))
 
-#define the decision tree
-tree = {
-    'question': 'What type of cuisine do you prefer?',
-    'answers': ['Italian', 'Asian', 'Mexican'],
-    'nodes':[
-        {
-            'question': 'What type of Italian dish would you like to cook?',
-            'answers': ['Pasta', 'Pizza', 'Risotto'],
-            'nodes': [
-                {
-                    'question': 'What type of pasta would you like to make?',
-                    'answers': ['Spaghetti', 'Lasagna', 'Fettuccine'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Spaghetti', 'Italian')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Lasagna', 'Italian')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Fettuccine', 'Italian')['results'][0:5]
-                        }
-                    ]
-                },
-                {
-                    'question': 'What type of pizza would you like to make?',
-                    'answers': ['Margherita', 'Pepperoni', 'Vegetarian'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Margherita', 'Italian')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Pepperoni', 'Italian')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Vegetarian', 'Italian')['results'][0:5]
-                        }
-                    ]
-                },
-                {
-                    'question': 'What type of risotto would you like to make?',
-                    'answers': ['Mushroom', 'Seafood', 'Asparagus'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Mushroom', 'Italian')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Seafood', 'Italian')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Asparagus', 'Italian')['results'][0:5]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            'question': 'What type of Asian dish would you like to cook?',
-            'answers': ['Chinese', 'Japanese', 'Thai'],
-            'nodes': [
-                {
-                    'question': 'What type of Chinese dish would you like to make?',
-                    'answers': ['Stir Fry', 'Dumplings', 'Hot Pot'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Stir Fry', 'Chinese')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Dumplings', 'Chinese')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Hot Pot', 'Chinese')['results'][0:5]
-                        }
-                    ]
-                },
-                {
-                    'question': 'What type of Japanese dish would you like to make?',
-                    'answers': ['Sushi', 'Ramen', 'Teriyaki'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Sushi', 'Japanese')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Ramen', 'Japanese')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Teriyaki', 'Japanese')['results'][0:5]
-                        }
-                    ]
-                },
-                {
-                    'question': 'What type of Thai dish would you like to make?',
-                    'answers': ['Curry', 'Pad Thai', 'Tom Yum'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Curry', 'Thai')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Pad Thai', 'Thai')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Tom Yum', 'Thai')['results'][0:5]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            'question': 'What type of Mexican dish would you like to cook?',
-            'answers': ['Tacos', 'Enchiladas', 'Chiles Rellenos'],
-            'nodes': [
-                {
-                    'question': 'What type of filling would you like for your tacos?',
-                    'answers': ['Beef', 'Chicken', 'Vegetarian'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Beef Tacos', 'Mexican')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Chicken Tacos', 'Mexican')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Vegetarian Tacos', 'Mexican')['results'][0:5]
-                        }
-                    ]
-                },
-                {
-                    'question': 'What type of sauce would you like for your enchiladas?',
-                    'answers': ['Red Sauce', 'Green Sauce', 'Mole Sauce'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Enchiladas with Red Sauce', 'Mexican')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Enchiladas with Green Sauce', 'Mexican')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Enchiladas with Mole Sauce', 'Mexican')['results'][0:5]
-                        }
-                    ]
-                },
-                {
-                    'question': 'What type of stuffing would you like for your chiles rellenos?',
-                    'answers': ['Cheese', 'Beef', 'Vegetables'],
-                    'nodes': [
-                        {
-                            'result': search_recipe('Cheese Stuffed Chiles Rellenos', 'Mexican')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Beef Stuffed Chiles Rellenos', 'Mexican')['results'][0:5]
-                        },
-                        {
-                            'result': search_recipe('Vegetable Stuffed Chiles Rellenos', 'Mexican')['results'][0:5]
-                        }
-                    ]
-                }
-            ]
-        }]}
+
+    #spoontacular data
+def get_id(query, cuisine):
     
+    spoon_api_key = '225f60550c4e4e1b8fa8aeaf780bafe5'
+    spoon_baseurl = 'https://api.spoonacular.com/recipes/complexSearch'
+    
+    params = {
+        "apiKey": spoon_api_key,
+        "query": query,
+        "cuisine": cuisine,
+        "addRecipeInformation": True,
+        "addRecipeNutrition": True
+    }
+    
+    response = make_request_with_cache(spoon_baseurl, params=params)
+    return response
+
 
 def decision_tree(node):
     if isinstance(node, dict) and 'answers' in node:
-        print(node['answers'])
-        answer = input(node['question'])
-        while answer not in node['answers']:
+        #print answers
+        for i in range(1, len(node['answers']) + 1):
+            print(str(i) + ". " + node['answers'][i-1])
+        answer = input("Enter the number of your answer: ")
+
+        while answer <= "0" or answer >= str(len(node['answers']) + 1):
             print("Invalid answer. Please try again.")
-            answer = input(node['question'])
-        next_node = node['nodes'][node['answers'].index(answer)]
+            answer = input("Enter the number of your answer: ")
+        next_node = node['nodes'][int(answer)-1]
         return decision_tree(next_node)
     else:
         return node
 
 def get_recipes():
-    results = decision_tree(tree)['results']
-    print_recipes(results)
+    recipes = decision_tree(tree)['result']
+    for i in range(len(recipes)):
+        recipe = recipes[i]
+        print(f"{i+1}. {recipe['title']}")
 
-# Results in the form of a JSON dictionary
-def print_recipes(results):
-    print("Here are the matching recipes:\n")
-    print(json.dumps(results, indent=2))
+    recipe_num = input("Enter the number of the recipe you want to view: ")
+    try:
+        recipe_num = int(recipe_num)
+        if recipe_num < 1 or recipe_num > len(recipes):
+            raise ValueError
+    except ValueError:
+        print("Invalid input. Please enter a number between 1 and", len(recipes))
+        return
 
+    selected_recipe = recipes[recipe_num - 1]
+    id = selected_recipe['id']
+    print(f"You selected: {selected_recipe['title']}")
+
+    spoon_api_key = '225f60550c4e4e1b8fa8aeaf780bafe5'
+    spoon_baseurl = f'https://api.spoonacular.com/recipes/{id}/information'
+
+    params = {
+        "apiKey": spoon_api_key,
+        "includeNutrition": True
+    }
+    
+    response = make_request_with_cache(spoon_baseurl, params=params)
+    #response = json.dumps(response, indent=1) pprint json
+    #keys: extendedIngredients, instructions, title
+    print(response['title'])
+    print("Ingredient List:")
+    for ingredient in response['extendedIngredients']:
+        print("\t" + ingredient['name'])
+    instructions = '\n'.join(textwrap.wrap(response['instructions'], 70, break_long_words=False))
+    print(instructions)
+    #print(response)
 
 def main():
+    
     print("Welcome to the Personalized Meal Plan Guide!")
     print("Answer the following questions to get a personalized meal plan.")
+
     get_recipes()
+    
+    
 
 if __name__ == "__main__":
     main()
 
+
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 

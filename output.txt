@@ -1,0 +1,39 @@
+Welcome to the Personalized Meal Plan Guide!
+Answer the following questions to get a personalized meal plan.
+1. Italian
+2. Asian
+3. Mexican
+Enter the number of your answer: 1. Pasta
+2. Pizza
+3. Risotto
+Enter the number of your answer: 1. Ravioli
+2. Lasagna
+3. Fettuccine
+Enter the number of your answer: 1. Ravioli With Arugula, Pine Nuts, Raisins & Cream
+2. Crab Ravioli With Scallops and Gremolata
+3. Open Ravioli With Butternut Squash and Amaretti
+4. Baked Ravioli & Meat Sauce
+5. Fried Ravioli & Mint Parsley Pesto
+Enter the number of the recipe you want to view: You selected: Ravioli With Arugula, Pine Nuts, Raisins & Cream
+cache hit! https://api.spoonacular.com/recipes/657956/information_apiKey_225f60550c4e4e1b8fa8aeaf780bafe5_includeNutrition_True
+Ravioli With Arugula, Pine Nuts, Raisins & Cream
+Ingredient List:
+	ravioli
+	olive oil
+	garlic
+	pine nuts
+	raisins
+	arugula
+	cream
+	salt & pepper
+Boil enough water to cook the ravioli in a medium-sized pot.  Once the
+water has come to a boil, drop in the ravioli and cook it for the 4-6
+minutes that is usually required for fresh ravioli.  Obviously, you
+will need longer if using dried ravioli.  When there are about 4
+minutes left in the ravioli cooking time, warm the olive oil to medium
+heat in a large pan.  Add the pine nuts and saut them for about a
+minute.  Add the garlic and saut for another minute.  Make sure that
+it does not brown.  Then, add the raisins and arugula and stir for 20
+to 30 seconds.  Once most of the arugula has begun to wilt, add the
+cream and simmer for 1 minute.  Remove from heat.  Drain the ravioli,
+place them in a bowl, and top with the arugula
