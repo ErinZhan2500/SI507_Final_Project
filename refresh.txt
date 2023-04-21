@@ -1,0 +1,1 @@
+https://api.kroger.com/v1/connect/signin?client_id=erinfinalproject-03e19ff3eb54ebc908f4f8d8b54f31987134382640670711017&redirect_uri=http%3A%2F%2Flocalhost%3A8888&response_type=code&scope=product.compact

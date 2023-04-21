@@ -1,0 +1,41 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <title>Recipe-Finder</title>
+ </head>
+  <body>
+  </body>
+</html>
+<html>
+    <title>Recipe Finder</title>      
+<div>
+    <body>
+        <p>Welcome to the Personalized Meal Plan Guide!</p>
+        <p>Answer the following questions to get a personalized meal plan</p>
+        {%for line in Data.lines%}
+            <p>{{line}}</p>
+        {% endfor %}
+        {% if Data.error_message == "" %}
+        {% else %}
+            <p>{{Data.error_message}}</p>
+        {% endif %}
+    </body>
+    {% if Data.done == false %}
+    <form action="/send_answer" method="post" enctype="multipart/form-data">
+        <label>Enter the number of your answer:</label>
+        <input type="number" name="answer" required/>
+        <input type="submit" value="Submit"/>
+    </form>
+    {% elif Data.done == true and Data.priceoutput == false %}
+    <form action="/send_answer_text" method="post" enctype="multipart/form-data">
+        <label>Enter a comma-separated list of missing ingredients:</label>
+        <input type="text" name="answer" required/>
+        <input type="submit" value="Submit"/>
+    </form>
+    {% endif %}
+
+</div>
+<form action="/reset" method="post" enctype="multipart/form-data">
+    <input type="submit" value="Reset"/>
+</form>
+</html>
