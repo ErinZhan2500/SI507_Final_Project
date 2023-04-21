@@ -19,7 +19,8 @@ Install the required packages using pip.
 Obtain an authorization code from the Kroger API by visiting the authorization URL in your web browser and completing the authentication flow.
 Update the auth_code, client_id, and client_secret variables at the bottom of FinalProject.py with your own values.
 Run FinalProject.py.
-Open a web browser and go to http://localhost:5000 to interact with the program.
+The flask will be runnning and you can see "Running on http://127.0.0.1:5000".
+Go to the link and the application will open in a browser. 
 
 Data Structure: 
 
